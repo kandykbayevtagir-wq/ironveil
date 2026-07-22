@@ -1,0 +1,71 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "assets/**"
+      - "docs/**"
+      - "site/**"
+      - "src/**"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+      - ".github/scripts/generate_demo_report.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install documentation dependencies
+        run: python -m pip install -e ".[docs]"
+      - name: Build documentation
+        run: mkdocs build --strict --site-dir _site/docs
+      - name: Assemble static site
+        run: |
+          cp -R site/. _site/
+          mkdir -p _site/assets
+          cp assets/*.svg _site/assets/
+      - name: Generate synthetic demo report
+        run: python .github/scripts/generate_demo_report.py site/demo-fixture.json _site/demo-report.html
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy site
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic IronVeil terminal report</title>
+  <desc id="desc">A terminal scan with two masked synthetic findings and remediation guidance.</desc>
+  <rect width="1200" height="610" rx="18" fill="#10181d"/>
+  <rect width="1200" height="58" rx="18" fill="#1d2a31"/>
+  <rect y="40" width="1200" height="18" fill="#1d2a31"/>
+  <circle cx="31" cy="29" r="8" fill="#d26a62"/>
+  <circle cx="57" cy="29" r="8" fill="#d4a85c"/>
+  <circle cx="83" cy="29" r="8" fill="#69a776"/>
+  <text x="600" y="37" text-anchor="middle" fill="#9fb0b8" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="17">synthetic-demo — ironveil</text>
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="21">
+    <text x="36" y="102" fill="#7fb2b3">$</text>
+    <text x="61" y="102" fill="#e5ecef">ironveil diff origin/main...HEAD</text>
+    <text x="36" y="148" fill="#9fb0b8">IronVeil 0.1.0 · local scan · network disabled</text>
+
+    <text x="36" y="202" fill="#df8a80">CRITICAL</text>
+    <text x="164" y="202" fill="#e5ecef">IV-SEC-001</text>
+    <text x="318" y="202" fill="#9fb0b8">high confidence</text>
+    <text x="36" y="236" fill="#e5ecef">config/sample.env:4</text>
+    <text x="318" y="236" fill="#9fb0b8">Possible AWS access key ID detected</text>
+    <text x="36" y="270" fill="#9fb0b8">evidence</text>
+    <text x="165" y="270" fill="#e5ecef">…&lt;redacted:20&gt;…</text>
+    <text x="36" y="304" fill="#9fb0b8">fix</text>
+    <text x="135" y="304" fill="#e5ecef">Revoke, remove from history, then use a secret manager.</text>
+
+    <text x="36" y="362" fill="#e1bd70">HIGH</text>
+    <text x="164" y="362" fill="#e5ecef">IV-GHA-004</text>
+    <text x="318" y="362" fill="#9fb0b8">high confidence</text>
+    <text x="36" y="396" fill="#e5ecef">.github/workflows/build.yml:18</text>
+    <text x="445" y="396" fill="#9fb0b8">Third-party action is not pinned</text>
+    <text x="36" y="430" fill="#9fb0b8">fix</text>
+    <text x="135" y="430" fill="#e5ecef">Pin the action to a reviewed 40-character commit SHA.</text>
+
+    <line x1="36" y1="469" x2="1164" y2="469" stroke="#33464f"/>
+    <text x="36" y="513" fill="#e5ecef">2 findings</text>
+    <text x="206" y="513" fill="#df8a80">critical 1</text>
+    <text x="356" y="513" fill="#e1bd70">high 1</text>
+    <text x="478" y="513" fill="#9fb0b8">files 9 · 84 KiB · timing omitted (synthetic)</text>
+    <text x="36" y="557" fill="#df8a80">Policy failed (exit 1)</text>
+    <text x="392" y="557" fill="#6f828b">Synthetic values only; matched content is always masked.</text>
+  </g>
+</svg>

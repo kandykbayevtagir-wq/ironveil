@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="IronVeil">
+  <path d="M16 2 28 6v9c0 7.6-4.7 13.5-12 16C8.7 28.5 4 22.6 4 15V6Z" fill="#f4f7f7" stroke="#20313a" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M16 3.6 26 7v8c0 6-3.3 11-10 14Z" fill="#639799"/>
+  <path d="M16 5v23" stroke="#20313a" stroke-width="2" stroke-linecap="round"/>
+</svg>

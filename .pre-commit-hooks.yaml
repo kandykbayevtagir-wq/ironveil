@@ -1,0 +1,8 @@
+- id: ironveil
+  name: IronVeil staged scan
+  description: Scan staged changes for secrets and repository security findings.
+  entry: ironveil pre-commit
+  language: python
+  pass_filenames: false
+  require_serial: true
+  stages: [pre-commit]

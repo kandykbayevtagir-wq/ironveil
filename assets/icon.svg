@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">IronVeil shield</title>
+  <path d="M32 4 55 12v17c0 15-9 26-23 32C18 55 9 44 9 29V12Z" fill="#eef4f4" stroke="#20313a" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M32 7 51 14v15c0 12-6 21-19 28Z" fill="#639799"/>
+  <path d="M32 9v47" fill="none" stroke="#20313a" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

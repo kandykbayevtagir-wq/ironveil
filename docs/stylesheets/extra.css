@@ -1,0 +1,29 @@
+:root {
+  --ironveil-ink: #17212b;
+  --ironveil-accent: #3d6f73;
+}
+
+body {
+  color: var(--ironveil-ink);
+}
+
+a {
+  color: var(--ironveil-accent);
+}
+
+code {
+  font-variant-ligatures: none;
+}
+
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ironveil-ink: #e4ebef;
+    --ironveil-accent: #8fc1c2;
+  }
+}

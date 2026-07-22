@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.python-version
+.venv/
+venv/
+
+# Build and test output
+build/
+dist/
+site-build/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# IronVeil local state and generated reports
+.ironveil-cache/
+.ironveil-results/
+/ironveil-report.json
+/ironveil-report.html
+/ironveil-junit.xml
+/ironveil.sarif
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

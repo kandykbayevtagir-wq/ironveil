@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">IronVeil</title>
+  <desc id="desc">A shield divided by a narrow vertical veil.</desc>
+  <style>
+    .shield { fill: #f4f7f7; stroke: #20313a; }
+    .veil { fill: #5f9294; }
+    .line { stroke: #20313a; }
+    @media (prefers-color-scheme: dark) {
+      .shield { fill: #18242b; stroke: #d9e5e6; }
+      .veil { fill: #7fb2b3; }
+      .line { stroke: #d9e5e6; }
+    }
+  </style>
+  <path class="shield" d="M64 7 108 23v34c0 29-17 52-44 64-27-12-44-35-44-64V23Z" stroke-width="6" stroke-linejoin="round"/>
+  <path class="veil" d="M64 13 101 27v30c0 24-13 44-37 56Z" opacity=".82"/>
+  <path class="line" d="M64 15v98" fill="none" stroke-width="5" stroke-linecap="round"/>
+</svg>

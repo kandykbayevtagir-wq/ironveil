@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "root": "demo-repository",
+  "command": "scan .",
+  "started_at": "2026-01-15T10:30:00Z",
+  "git_branch": "feature/example",
+  "git_commit": "0000000000000000000000000000000000000000",
+  "stats": {
+    "files_discovered": 11,
+    "files_scanned": 9,
+    "files_skipped": 2,
+    "cache_hits": 0,
+    "bytes_scanned": 86016,
+    "duration_seconds": 0.0
+  },
+  "findings": [
+    {
+      "rule_id": "IV-SEC-001",
+      "rule_name": "AWS access key ID",
+      "category": "secret",
+      "severity": "critical",
+      "confidence": "high",
+      "path": "config/sample.env",
+      "line": 4,
+      "column": 18,
+      "message": "Possible AWS access key ID detected.",
+      "remediation": "Revoke or rotate the credential, remove it from Git history, and store the replacement in a secret manager.",
+      "fingerprint": "synthetic-fingerprint-001",
+      "evidence": "AWS_ACCESS_KEY_ID=AKIA••••••••••••7Q2M",
+      "source": "working-tree"
+    },
+    {
+      "rule_id": "IV-GHA-004",
+      "rule_name": "Third-party action not pinned to a commit",
+      "category": "iac",
+      "severity": "high",
+      "confidence": "high",
+      "path": ".github/workflows/build.yml",
+      "line": 18,
+      "column": 9,
+      "message": "GitHub Actions: third-party action not pinned to a commit.",
+      "remediation": "Pin the action to a reviewed full 40-character commit SHA and retain the release tag in a comment.",
+      "fingerprint": "synthetic-fingerprint-002",
+      "evidence": "uses: example/action@moving-tag",
+      "source": "working-tree"
+    },
+    {
+      "rule_id": "IV-DEP-002",
+      "rule_name": "Wildcard or floating dependency",
+      "category": "dependency",
+      "severity": "medium",
+      "confidence": "high",
+      "path": "pyproject.toml",
+      "line": 21,
+      "column": 1,
+      "message": "Wildcard or floating dependency detected in a dependency file.",
+      "remediation": "Use a reviewed exact version or lockfile-backed immutable resolution.",
+      "fingerprint": "synthetic-fingerprint-003",
+      "evidence": "sample-library: floating version",
+      "source": "working-tree"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+site_name: IronVeil
+site_description: Local-first repository security scanner documentation
+site_url: https://kandykbayevtagir-wq.github.io/ironveil/docs/
+site_dir: site-build
+repo_url: https://github.com/kandykbayevtagir-wq/ironveil
+repo_name: kandykbayevtagir-wq/ironveil
+edit_uri: edit/main/docs/
+copyright: Copyright 2026 IronVeil contributors. Apache-2.0.
+
+theme:
+  name: mkdocs
+  color_mode: auto
+  user_color_mode_toggle: true
+  nav_style: dark
+
+nav:
+  - Overview: index.md
+  - Getting started: getting-started.md
+  - CLI reference: cli-reference.md
+  - Configuration: configuration.md
+  - Rules: rules.md
+  - Git history scanning: git-history.md
+  - Baselines: baseline.md
+  - Suppressions: suppressions.md
+  - Integrations:
+      - GitHub Actions: github-actions.md
+      - Pre-commit: pre-commit.md
+      - HTML UI: html-ui.md
+      - SARIF: sarif.md
+  - Dependency scanning: dependency-scanning.md
+  - Security:
+      - Threat model: threat-model.md
+      - Performance and cache: performance.md
+  - Extending IronVeil:
+      - Writing custom rules: writing-custom-rules.md
+      - Architecture: architecture.md
+  - Release process: release-process.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/extra.css
+
+strict: true

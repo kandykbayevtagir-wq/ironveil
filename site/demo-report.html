@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;none&#x27;; style-src &#x27;sha256-xC9HS6T4ErDr/GdEgqy/633be3qdCgFs9BmWxS2lrQ4=&#x27;; script-src &#x27;sha256-LJJoMcxQjuvnI9hzsc1VjsIWkE02HrBqxmC2b3k/OQI=&#x27;; img-src data:; font-src &#x27;none&#x27;; connect-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;; frame-ancestors &#x27;none&#x27;">
+  <title>IronVeil security report</title>
+  <style>
+:root {
+  color-scheme: light dark;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-soft: #edf2f8;
+  --text: #152033;
+  --muted: #5c6b7d;
+  --border: #d6dee9;
+  --accent: #2854c5;
+  --accent-strong: #173b99;
+  --critical: #a51426;
+  --high: #c13b16;
+  --medium: #996500;
+  --low: #126b7a;
+  --info: #526173;
+  --good: #147a4b;
+  --warning-bg: #fff4cf;
+  --danger-bg: #ffe8eb;
+  --shadow: 0 8px 28px rgba(25, 44, 79, 0.09);
+  --radius: 14px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1120;
+    --surface: #121b2d;
+    --surface-soft: #19243a;
+    --text: #e8edf6;
+    --muted: #a9b5c7;
+    --border: #2a3852;
+    --accent: #8aa9ff;
+    --accent-strong: #b7c9ff;
+    --critical: #ff7686;
+    --high: #ff946f;
+    --medium: #f1c766;
+    --low: #6ed0df;
+    --info: #b6c0cf;
+    --good: #69d6a4;
+    --warning-bg: #3c3218;
+    --danger-bg: #3b1d25;
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.27);
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-soft: #edf2f8;
+  --text: #152033;
+  --muted: #5c6b7d;
+  --border: #d6dee9;
+  --accent: #2854c5;
+  --accent-strong: #173b99;
+  --critical: #a51426;
+  --high: #c13b16;
+  --medium: #996500;
+  --low: #126b7a;
+  --info: #526173;
+  --good: #147a4b;
+  --warning-bg: #fff4cf;
+  --danger-bg: #ffe8eb;
+  --shadow: 0 8px 28px rgba(25, 44, 79, 0.09);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --surface: #121b2d;
+  --surface-soft: #19243a;
+  --text: #e8edf6;
+  --muted: #a9b5c7;
+  --border: #2a3852;
+  --accent: #8aa9ff;
+  --accent-strong: #b7c9ff;
+  --critical: #ff7686;
+  --high: #ff946f;
+  --medium: #f1c766;
+  --low: #6ed0df;
+  --info: #b6c0cf;
+  --good: #69d6a4;
+  --warning-bg: #3c3218;
+  --danger-bg: #3b1d25;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.27);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+}
+a { color: var(--accent); }
+a:hover { color: var(--accent-strong); }
+button, input, select { font: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  outline-offset: 2px;
+}
+[hidden] { display: none !important; }
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  background: var(--surface);
+  color: var(--text);
+  padding: .7rem 1rem;
+  z-index: 20;
+  border-radius: .5rem;
+}
+.skip-link:focus { top: 1rem; }
+.topbar {
+  background: linear-gradient(120deg, #10255b, #263f8f 55%, #315bb7);
+  color: #fff;
+  padding: 2rem max(1rem, calc((100vw - 1180px) / 2));
+}
+.topbar-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.eyebrow {
+  margin: 0 0 .35rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  font-weight: 800;
+  opacity: .85;
+}
+h1 { margin: 0; font-size: clamp(1.7rem, 5vw, 2.6rem); line-height: 1.12; }
+.subtitle { margin: .55rem 0 0; color: #dce5ff; max-width: 70ch; }
+.theme-button {
+  border: 1px solid rgba(255, 255, 255, .45);
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+  border-radius: 999px;
+  padding: .55rem .9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.container { width: min(1180px, calc(100% - 2rem)); margin: 1.5rem auto 4rem; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.15rem;
+  margin: 0 0 1.2rem;
+}
+.panel h2 { margin: 0 0 .85rem; font-size: 1.25rem; }
+.panel h3 { margin: 1.15rem 0 .55rem; font-size: 1rem; }
+.muted { color: var(--muted); }
+.meta-grid, .stats-grid, .summary-grid {
+  display: grid;
+  gap: .8rem;
+}
+.summary-grid { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+.meta-grid, .stats-grid { grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); }
+.metric {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: .85rem;
+  min-width: 0;
+}
+.metric-label {
+  display: block;
+  color: var(--muted);
+  font-size: .76rem;
+  font-weight: 750;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.metric-value { display: block; font-size: 1.55rem; font-weight: 800; margin-top: .15rem; }
+.metric-value.small { font-size: .95rem; overflow-wrap: anywhere; }
+.score-layout {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) 1fr;
+  gap: 1.2rem;
+  align-items: stretch;
+}
+.score-card {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+.score-number { font-size: 3.2rem; font-weight: 850; line-height: 1; }
+.score-out-of { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+.score-good { color: var(--good); }
+.score-caution { color: var(--medium); }
+.score-danger { color: var(--critical); }
+.formula {
+  background: var(--surface-soft);
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  padding: .75rem;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.controls {
+  display: grid;
+  grid-template-columns: minmax(230px, 2fr) repeat(5, minmax(120px, 1fr)) auto;
+  gap: .65rem;
+  align-items: end;
+}
+.control label { display: block; color: var(--muted); font-size: .78rem; margin-bottom: .25rem; }
+.control input, .control select {
+  width: 100%;
+  min-height: 2.55rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  padding: .5rem .6rem;
+}
+.clear-button {
+  min-height: 2.55rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text);
+  padding: .5rem .8rem;
+  cursor: pointer;
+}
+.result-count { color: var(--muted); margin: .8rem 0 0; }
+.finding-list { display: grid; gap: .85rem; }
+.finding {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--info);
+  border-radius: 11px;
+  padding: 1rem;
+  box-shadow: 0 3px 12px rgba(12, 30, 58, .06);
+}
+.finding.severity-critical { border-left-color: var(--critical); }
+.finding.severity-high { border-left-color: var(--high); }
+.finding.severity-medium { border-left-color: var(--medium); }
+.finding.severity-low { border-left-color: var(--low); }
+.finding.severity-info { border-left-color: var(--info); }
+.finding-header { display: flex; justify-content: space-between; gap: .8rem; align-items: flex-start; }
+.finding h3 { margin: 0; font-size: 1.02rem; overflow-wrap: anywhere; }
+.location { margin: .28rem 0 0; color: var(--muted); overflow-wrap: anywhere; }
+.badges { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .35rem; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--text);
+  padding: .2rem .52rem;
+  font-size: .72rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.badge.critical { color: var(--critical); }
+.badge.high { color: var(--high); }
+.badge.medium { color: var(--medium); }
+.badge.low { color: var(--low); }
+.badge.info { color: var(--info); }
+.badge.new { color: var(--critical); }
+.badge.baseline { color: var(--medium); }
+.badge.suppressed { color: var(--good); }
+.badge.expired { color: var(--critical); background: var(--danger-bg); }
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: .75rem;
+  margin-top: .85rem;
+}
+.detail {
+  background: var(--surface-soft);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: .7rem;
+  min-width: 0;
+}
+.detail-title { display: block; font-weight: 760; font-size: .8rem; margin-bottom: .25rem; }
+.detail p { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .86em;
+  overflow-wrap: anywhere;
+}
+.reference-list { margin: .35rem 0 0; padding-left: 1.2rem; }
+.reference-list li { overflow-wrap: anywhere; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { text-align: left; padding: .65rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--muted); font-size: .74rem; text-transform: uppercase; letter-spacing: .04em; }
+td { overflow-wrap: anywhere; }
+.notice {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--warning-bg);
+  padding: .75rem;
+  margin-top: .7rem;
+}
+.empty {
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  color: var(--muted);
+}
+.footer { color: var(--muted); text-align: center; font-size: .82rem; margin-top: 1.5rem; }
+
+@media (max-width: 1050px) {
+  .controls { grid-template-columns: repeat(3, 1fr); }
+  .control.search { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .topbar { padding: 1.4rem 1rem; }
+  .topbar-inner, .finding-header { flex-direction: column; }
+  .badges { justify-content: flex-start; }
+  .container { width: min(100% - 1rem, 1180px); margin-top: .5rem; }
+  .panel { padding: .85rem; border-radius: 10px; }
+  .score-layout { grid-template-columns: 1fr; }
+  .controls { grid-template-columns: 1fr 1fr; }
+  .control.search { grid-column: 1 / -1; }
+  .clear-button { width: 100%; }
+}
+@media (max-width: 430px) {
+  .controls { grid-template-columns: 1fr; }
+  .control.search { grid-column: auto; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+}
+@media print {
+  .theme-button, .controls, .result-count, .skip-link { display: none; }
+  body { background: #fff; color: #111; }
+  .panel, .finding { box-shadow: none; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to report</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div>
+      <p class="eyebrow">IronVeil 0.1.0</p>
+      <h1>Repository security report</h1>
+      <p class="subtitle">Local-first scan results. Evidence is rendered only from the
+      scanner's masked finding model.</p>
+    </div>
+    <button class="theme-button" id="theme-toggle" type="button"
+            aria-label="Toggle light and dark theme">Theme</button>
+  </div>
+</header>
+<main class="container" id="main-content">
+<section class="panel" aria-labelledby="summary-title"><h2 id="summary-title">Summary</h2><div class="summary-grid"><div class="metric"><span class="metric-label">Active findings</span><span class="metric-value">3</span></div><div class="metric"><span class="metric-label">New</span><span class="metric-value">3</span></div><div class="metric"><span class="metric-label">Baseline</span><span class="metric-value">0</span></div><div class="metric"><span class="metric-label">Suppressed</span><span class="metric-value">0</span></div><div class="metric"><span class="metric-label">Critical</span><span class="metric-value">1</span></div><div class="metric"><span class="metric-label">High</span><span class="metric-value">1</span></div><div class="metric"><span class="metric-label">Medium</span><span class="metric-value">1</span></div><div class="metric"><span class="metric-label">Low</span><span class="metric-value">0</span></div></div></section><section class="panel" aria-labelledby="score-title"><h2 id="score-title">Security score</h2><div class="score-layout"><div class="score-card"><div class="score-number score-caution">60</div><div class="score-out-of">out of 100</div><div class="muted">Deduction: 40</div></div><div><p>The score starts at 100 and subtracts fixed points for every active, unsuppressed finding. Baseline findings remain in the score because they are still unresolved. Info findings subtract zero points.</p><div class="formula">100 - (25 x 1 critical + 10 x 1 high + 5 x 1 medium + 2 x 0 low)</div><p class="muted">The result is floored at zero. This is a simple prioritisation aid, not a probability, compliance grade, or substitute for reviewing the findings.</p></div></div></section><section class="panel" aria-labelledby="metadata-title"><h2 id="metadata-title">Scan context</h2><div class="meta-grid"><div class="metric"><span class="metric-label">Scan time</span><span class="metric-value small">2026-01-15T10:30:00Z</span></div><div class="metric"><span class="metric-label">Root</span><span class="metric-value small">demo-repository</span></div><div class="metric"><span class="metric-label">Command</span><span class="metric-value small">scan .</span></div><div class="metric"><span class="metric-label">Git branch</span><span class="metric-value small">feature/example</span></div><div class="metric"><span class="metric-label">Git commit</span><span class="metric-value small">0000000000000000000000000000000000000000</span></div><div class="metric"><span class="metric-label">History scan</span><span class="metric-value small">Not run</span></div><div class="metric"><span class="metric-label">Dependency scan</span><span class="metric-value small">Completed</span></div><div class="metric"><span class="metric-label">Config digest</span><span class="metric-value small">synthetic-demo-configuration</span></div></div></section><section class="panel" aria-labelledby="statistics-title"><h2 id="statistics-title">Scan statistics</h2><div class="stats-grid"><div class="metric"><span class="metric-label">Files discovered</span><span class="metric-value">11</span></div><div class="metric"><span class="metric-label">Files scanned</span><span class="metric-value">9</span></div><div class="metric"><span class="metric-label">Files skipped</span><span class="metric-value">2</span></div><div class="metric"><span class="metric-label">Cache hits</span><span class="metric-value">0</span></div><div class="metric"><span class="metric-label">Bytes scanned</span><span class="metric-value">84.0 KiB</span></div><div class="metric"><span class="metric-label">Duration</span><span class="metric-value">0.000 s</span></div><div class="metric"><span class="metric-label">Scan rate</span><span class="metric-value">0 B/s</span></div><div class="metric"><span class="metric-label">Scan errors</span><span class="metric-value">0</span></div></div></section><section class="panel" aria-labelledby="baseline-title"><h2 id="baseline-title">Baseline and gating</h2><div class="summary-grid"><div class="metric"><span class="metric-label">New findings</span><span class="metric-value">3</span></div><div class="metric"><span class="metric-label">Baseline findings</span><span class="metric-value">0</span></div><div class="metric"><span class="metric-label">Suppressed findings</span><span class="metric-value">0</span></div></div><p class="muted">Baseline findings are existing, unsuppressed issues. They remain visible and count toward the security score, while CI can gate only on new findings. Suppressed findings are excluded from the active totals and score.</p></section><section class="panel" aria-labelledby="suppressions-title"><h2 id="suppressions-title">Suppressions</h2><div class="empty">No suppressions were applied.</div></section>
+<section class="panel" aria-labelledby="distribution-title">
+  <h2 id="distribution-title">Distribution</h2>
+  <div class="details-grid">
+    <div class="detail">
+      <span class="detail-title">Active findings by category</span>
+      <div class="table-wrap"><table><thead><tr><th>Category</th><th>Count</th></tr>
+      </thead><tbody><tr><td>Secret</td><td>1</td></tr><tr><td>Sensitive File</td><td>0</td></tr><tr><td>Dependency</td><td>1</td></tr><tr><td>Iac</td><td>1</td></tr><tr><td>Repository</td><td>0</td></tr><tr><td>Scan Error</td><td>0</td></tr></tbody></table></div>
+    </div>
+    <div class="detail">
+      <span class="detail-title">Files with active findings</span>
+      <div class="table-wrap"><table><thead><tr><th>File</th><th>Count</th><th>Highest</th></tr>
+      </thead><tbody><tr><td><code>.github/workflows/build.yml</code></td><td>1</td><td><span class="badge high">HIGH</span></td></tr><tr><td><code>config/sample.env</code></td><td>1</td><td><span class="badge critical">CRITICAL</span></td></tr><tr><td><code>pyproject.toml</code></td><td>1</td><td><span class="badge medium">MEDIUM</span></td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+<section class="panel" aria-labelledby="diagnostics-title"><h2 id="diagnostics-title">Warnings and scan errors</h2><div class="table-wrap"><table><thead><tr><th>Type</th><th>Path</th><th>Message</th></tr></thead><tbody><tr><td>Warning</td><td>—</td><td>Synthetic demonstration: no repository was scanned and timing was not measured.</td></tr></tbody></table></div></section>
+<section class="panel" aria-labelledby="filters-title">
+  <h2 id="filters-title">Findings</h2>
+  <div class="controls">
+    <div class="control search">
+      <label for="path-search">Search path</label>
+      <input id="path-search" data-filter type="search" placeholder="src/settings.py"
+             autocomplete="off" spellcheck="false">
+    </div>
+    <div class="control">
+      <label for="severity-filter">Severity</label>
+      <select id="severity-filter" data-filter><option value="">All</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option><option value="info">Info</option></select>
+    </div>
+    <div class="control">
+      <label for="confidence-filter">Confidence</label>
+      <select id="confidence-filter" data-filter><option value="">All</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
+    </div>
+    <div class="control">
+      <label for="category-filter">Category</label>
+      <select id="category-filter" data-filter><option value="">All</option><option value="secret">Secret</option><option value="sensitive-file">Sensitive File</option><option value="dependency">Dependency</option><option value="iac">Iac</option><option value="repository">Repository</option><option value="scan-error">Scan Error</option></select>
+    </div>
+    <div class="control">
+      <label for="rule-filter">Rule</label>
+      <select id="rule-filter" data-filter><option value="">All</option><option value="iv-dep-002">IV-DEP-002</option><option value="iv-gha-004">IV-GHA-004</option><option value="iv-sec-001">IV-SEC-001</option></select>
+    </div>
+    <div class="control">
+      <label for="state-filter">State</label>
+      <select id="state-filter" data-filter><option value="">All</option><option value="new">New</option><option value="baseline">Baseline</option><option value="suppressed">Suppressed</option></select>
+    </div>
+    <button class="clear-button" id="clear-filters" type="button">Clear</button>
+  </div>
+  <p class="result-count" id="result-count" aria-live="polite"></p>
+</section>
+<div class="finding-list"><article class="finding severity-critical" data-finding data-path="config/sample.env" data-severity="critical" data-confidence="high" data-category="secret" data-rule="iv-sec-001" data-state="new"><div class="finding-header"><div><h3>IV-SEC-001 · AWS access key ID</h3><p class="location"><code>config/sample.env:4:18</code></p></div><div class="badges"><span class="badge critical">CRITICAL</span><span class="badge">high confidence</span><span class="badge">secret</span><span class="badge new">New</span></div></div><p>Possible AWS access key ID detected.</p><div class="details-grid"><div class="detail"><span class="detail-title">Remediation</span><p>Revoke or rotate the credential, remove it from Git history, and store the replacement in a secret manager.</p></div><div class="detail"><span class="detail-title">Masked evidence</span><p><code>AWS_ACCESS_KEY_ID=…&lt;redacted:20&gt;…</code></p></div></div><p class="muted"><small>Source: working-tree · Fingerprint: <code>synthetic-fingerprint-001</code></small></p></article><article class="finding severity-high" data-finding data-path=".github/workflows/build.yml" data-severity="high" data-confidence="high" data-category="iac" data-rule="iv-gha-004" data-state="new"><div class="finding-header"><div><h3>IV-GHA-004 · Third-party action not pinned to a commit</h3><p class="location"><code>.github/workflows/build.yml:18:9</code></p></div><div class="badges"><span class="badge high">HIGH</span><span class="badge">high confidence</span><span class="badge">iac</span><span class="badge new">New</span></div></div><p>GitHub Actions: third-party action not pinned to a commit.</p><div class="details-grid"><div class="detail"><span class="detail-title">Remediation</span><p>Pin the action to a reviewed full 40-character commit SHA and retain the release tag in a comment.</p></div><div class="detail"><span class="detail-title">Masked evidence</span><p><code>uses: example/action@moving-tag</code></p></div></div><p class="muted"><small>Source: working-tree · Fingerprint: <code>synthetic-fingerprint-002</code></small></p></article><article class="finding severity-medium" data-finding data-path="pyproject.toml" data-severity="medium" data-confidence="high" data-category="dependency" data-rule="iv-dep-002" data-state="new"><div class="finding-header"><div><h3>IV-DEP-002 · Wildcard or floating dependency</h3><p class="location"><code>pyproject.toml:21:1</code></p></div><div class="badges"><span class="badge medium">MEDIUM</span><span class="badge">high confidence</span><span class="badge">dependency</span><span class="badge new">New</span></div></div><p>Wildcard or floating dependency detected in a dependency file.</p><div class="details-grid"><div class="detail"><span class="detail-title">Remediation</span><p>Use a reviewed exact version or lockfile-backed immutable resolution.</p></div><div class="detail"><span class="detail-title">Masked evidence</span><p><code>sample-library: floating version</code></p></div></div><p class="muted"><small>Source: working-tree · Fingerprint: <code>synthetic-fingerprint-003</code></small></p></article></div>
+  <p class="footer">Generated locally by IronVeil 0.1.0.
+  No report assets require an internet connection.</p>
+</main>
+<script>
+(() => {
+  "use strict";
+
+  const cards = Array.from(document.querySelectorAll("[data-finding]"));
+  const controls = Array.from(document.querySelectorAll("[data-filter]"));
+  const resultCount = document.getElementById("result-count");
+  const clearButton = document.getElementById("clear-filters");
+
+  function filterValue(name) {
+    const element = document.getElementById(name);
+    return element ? element.value.trim().toLocaleLowerCase() : "";
+  }
+
+  function applyFilters() {
+    const query = filterValue("path-search");
+    const severity = filterValue("severity-filter");
+    const confidence = filterValue("confidence-filter");
+    const category = filterValue("category-filter");
+    const rule = filterValue("rule-filter");
+    const state = filterValue("state-filter");
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const matches =
+        (!query || (card.dataset.path || "").includes(query)) &&
+        (!severity || card.dataset.severity === severity) &&
+        (!confidence || card.dataset.confidence === confidence) &&
+        (!category || card.dataset.category === category) &&
+        (!rule || card.dataset.rule === rule) &&
+        (!state || card.dataset.state === state);
+      card.hidden = !matches;
+      if (matches) visible += 1;
+    });
+
+    if (resultCount) {
+      resultCount.textContent = `${visible} of ${cards.length} findings shown`;
+    }
+  }
+
+  controls.forEach((control) => {
+    control.addEventListener("input", applyFilters);
+    control.addEventListener("change", applyFilters);
+  });
+
+  if (clearButton) {
+    clearButton.addEventListener("click", () => {
+      controls.forEach((control) => { control.value = ""; });
+      applyFilters();
+      const search = document.getElementById("path-search");
+      if (search) search.focus();
+    });
+  }
+
+  const root = document.documentElement;
+  const themeButton = document.getElementById("theme-toggle");
+  let savedTheme = "";
+  try {
+    savedTheme = window.localStorage.getItem("ironveil-theme") || "";
+  } catch (_error) {
+    savedTheme = "";
+  }
+  if (savedTheme === "light" || savedTheme === "dark") {
+    root.dataset.theme = savedTheme;
+  }
+  if (themeButton) {
+    themeButton.addEventListener("click", () => {
+      const current = root.dataset.theme ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const next = current === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      themeButton.setAttribute("aria-label", `Use ${current} theme`);
+      try {
+        window.localStorage.setItem("ironveil-theme", next);
+      } catch (_error) {
+        // Theme persistence is optional; the report remains fully functional.
+      }
+    });
+  }
+
+  applyFilters();
+})();
+</script>
+</body>
+</html>

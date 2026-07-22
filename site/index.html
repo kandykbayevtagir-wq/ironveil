@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IronVeil is a local-first scanner for secrets, Git history, dependencies, and repository misconfigurations.">
+  <meta name="theme-color" content="#142129">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>IronVeil — local-first repository security</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="IronVeil home"><img src="assets/icon.svg" width="38" height="38" alt=""><span>IronVeil</span></a>
+    <nav aria-label="Primary"><a href="docs/">Documentation</a><a href="demo-report.html">Demo report</a><a href="https://github.com/kandykbayevtagir-wq/ironveil">GitHub</a></nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Local-first repository scanner</p>
+        <h1>Repository security before secrets become incidents.</h1>
+        <p class="lede">Scan current files, staged changes, Git history, dependencies, and common infrastructure configuration. Source stays on your machine by default.</p>
+        <div class="install" aria-label="Install command"><code id="install-command">pipx install ironveil</code><button type="button" data-copy="install-command">Copy</button></div>
+        <div class="actions"><a class="button primary" href="docs/getting-started/">Get started</a><a class="button" href="https://github.com/kandykbayevtagir-wq/ironveil/releases">Releases</a></div>
+        <p class="preview-note">The first 0.1.0 preview is being prepared. Install from a reviewed source checkout until the package is published.</p>
+      </div>
+      <img class="hero-mark" src="assets/logo.svg" width="260" height="260" alt="IronVeil shield">
+    </section>
+
+    <section aria-labelledby="principles-title">
+      <h2 id="principles-title">A useful first pass, with explicit boundaries</h2>
+      <div class="cards">
+        <article><h3>Local by default</h3><p>A normal scan makes no network request. Optional OSV lookup sends package coordinates only.</p></article>
+        <article><h3>Masked at the source</h3><p>Evidence is masked before it reaches text, JSON, SARIF, HTML, JUnit, cache, or CI summary.</p></article>
+        <article><h3>Git-aware</h3><p>Review staged additions, a branch range, one commit, or deliberately bounded reachable history.</p></article>
+        <article><h3>Predictable policy</h3><p>Stable IDs, fingerprints, severity, confidence, baselines, suppressions, and exit codes support CI.</p></article>
+        <article><h3>Portable reports</h3><p>Produce SARIF for Code Scanning or a self-contained HTML report for local review.</p></article>
+        <article><h3>No target execution</h3><p>IronVeil does not import repository Python, install dependencies, or run build scripts.</p></article>
+      </div>
+    </section>
+
+    <section class="terminal" aria-labelledby="terminal-title">
+      <div class="section-heading"><div><p class="eyebrow">Synthetic output</p><h2 id="terminal-title">Findings without the full secret</h2></div><a href="demo-report.html">Open the demo HTML report →</a></div>
+      <img src="assets/terminal-demo.svg" alt="Synthetic terminal scan showing masked findings">
+    </section>
+
+    <section class="quick" aria-labelledby="quick-title">
+      <div><p class="eyebrow">Zero configuration</p><h2 id="quick-title">Start with one command</h2></div>
+      <pre><code>ironveil .
+ironveil staged
+ironveil diff origin/main...HEAD
+ironveil scan . --format html --output ironveil-report.html</code></pre>
+    </section>
+
+    <section class="scope" aria-labelledby="scope-title">
+      <h2 id="scope-title">What the preview checks</h2>
+      <ul>
+        <li>Provider-specific and contextual secret patterns, private keys, credential URLs, and high-entropy candidates.</li>
+        <li>Sensitive files, oversized content, generated directories, and ignore-state mistakes.</li>
+        <li>Python and JavaScript dependency hygiene, with explicit opt-in OSV advisory queries.</li>
+        <li>Explainable Dockerfile, GitHub Actions, Terraform, and Kubernetes checks.</li>
+      </ul>
+      <p>IronVeil is not a full SAST engine, container scanner, or proof that a repository is safe. Use it as one control in a layered review process.</p>
+    </section>
+  </main>
+
+  <footer><span>Apache-2.0 · IronVeil contributors</span><a href="https://github.com/kandykbayevtagir-wq/ironveil/security/policy">Security policy</a></footer>
+</body>
+</html>

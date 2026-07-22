@@ -1,0 +1,44 @@
+[scan]
+max_size_mb = 10
+workers = 8
+respect_gitignore = true
+follow_symlinks = false
+scan_binary = false
+use_cache = true
+
+[policy]
+fail_severity = "high"
+minimum_confidence = "medium"
+fail_on = ["secret", "dependency", "iac", "scan-error"]
+
+[history]
+enabled = false
+max_commits = 500
+
+[dependencies]
+online = false
+timeout_seconds = 10
+retries = 1
+
+[ui]
+open_browser = true
+host = "127.0.0.1"
+port = 8765
+
+[[allowlist]]
+rule = "*"
+path = "tests/**"
+reason = "Synthetic detector and policy fixtures are exercised by the test suite"
+expires = "2027-07-22"
+
+[[allowlist]]
+rule = "*"
+path = "src/ironveil/rules/**"
+reason = "Built-in detector source necessarily contains credential signatures"
+expires = "2027-07-22"
+
+[[allowlist]]
+rule = "IV-GHA-004"
+path = ".github/workflows/reusable-ironveil.yml"
+reason = "The reusable workflow intentionally invokes IronVeil through its own stable major tag"
+expires = "2027-07-22"

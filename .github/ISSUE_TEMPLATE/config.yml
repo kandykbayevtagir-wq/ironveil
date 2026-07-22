@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/kandykbayevtagir-wq/ironveil/security/advisories/new
+    about: Do not disclose exploitable vulnerabilities or credentials in a public issue.
+  - name: Documentation
+    url: https://kandykbayevtagir-wq.github.io/ironveil/docs/
+    about: Review setup, command, policy, and integration guidance.

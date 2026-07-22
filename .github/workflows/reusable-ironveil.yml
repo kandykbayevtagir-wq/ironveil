@@ -1,0 +1,44 @@
+name: Reusable IronVeil scan
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: Repository-relative path to scan.
+        required: false
+        type: string
+        default: .
+      fail-severity:
+        description: Lowest severity that fails the job.
+        required: false
+        type: string
+        default: high
+      minimum-confidence:
+        description: Lowest confidence included in policy evaluation.
+        required: false
+        type: string
+        default: medium
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: IronVeil
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Scan repository
+        uses: kandykbayevtagir-wq/ironveil@v1 # ironveil: allow IV-GHA-004 reason="this reusable workflow follows IronVeil's reviewed stable-major channel" expires="2027-07-01"
+        with:
+          path: ${{ inputs.path }}
+          fail-severity: ${{ inputs.fail-severity }}
+          minimum-confidence: ${{ inputs.minimum-confidence }}

@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.22
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: ironveil-self-check
+        name: IronVeil staged scan
+        entry: ironveil pre-commit
+        language: python
+        pass_filenames: false
+        require_serial: true
+        stages: [pre-commit]

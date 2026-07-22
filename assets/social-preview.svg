@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">IronVeil social preview</title>
+  <desc id="desc">IronVeil shield and the tagline Repository security before secrets become incidents.</desc>
+  <rect width="1280" height="640" fill="#142129"/>
+  <path d="M0 520 1280 280v360H0Z" fill="#1d3038"/>
+  <g transform="translate(110 128) scale(3)">
+    <path d="M64 7 108 23v34c0 29-17 52-44 64-27-12-44-35-44-64V23Z" fill="#eaf1f1" stroke="#8ebabb" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M64 12 101 26v31c0 24-13 44-37 56Z" fill="#639799"/>
+    <path d="M64 15v98" stroke="#20313a" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <text x="520" y="264" fill="#f4f7f7" font-family="ui-sans-serif, system-ui, sans-serif" font-size="94" font-weight="700" letter-spacing="-2">IronVeil</text>
+  <text x="524" y="335" fill="#9ec5c6" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="26">LOCAL-FIRST REPOSITORY SCANNER</text>
+  <text x="524" y="420" fill="#d8e3e4" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34">Repository security before secrets</text>
+  <text x="524" y="465" fill="#d8e3e4" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34">become incidents.</text>
+</svg>

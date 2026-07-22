@@ -1,0 +1,103 @@
+[build-system]
+requires = ["setuptools>=77.0.3", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ironveil"
+version = "0.1.0"
+description = "Local-first security scanner for secrets, Git history, dependencies and repository misconfigurations."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "IronVeil contributors" }]
+keywords = ["security", "devsecops", "secret-scanner", "git", "sarif", "static-analysis"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+docs = ["mkdocs>=1.6.1"]
+dev = [
+  "build>=1.2.2",
+  "jsonschema>=4.23",
+  "mkdocs>=1.6.1",
+  "mypy>=1.13",
+  "pre-commit>=4.0",
+  "pytest>=8.3",
+  "pytest-cov>=6.0",
+  "ruff>=0.8",
+  "twine>=6.0",
+]
+
+[project.scripts]
+ironveil = "ironveil.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/kandykbayevtagir-wq/ironveil"
+Documentation = "https://kandykbayevtagir-wq.github.io/ironveil/"
+Repository = "https://github.com/kandykbayevtagir-wq/ironveil"
+Issues = "https://github.com/kandykbayevtagir-wq/ironveil/issues"
+Changelog = "https://github.com/kandykbayevtagir-wq/ironveil/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ironveil = ["py.typed", "schemas/*.json"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+markers = [
+  "integration: tests that exercise Git or subprocess boundaries",
+  "benchmark: non-gating performance checks",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["ironveil"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 110
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "S", "RUF"]
+ignore = ["E501", "S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/ironveil/core/discovery.py" = ["S603"]
+"src/ironveil/core/git.py" = ["S603"]
+"tests/**" = ["S105", "S106", "S108", "S603", "S607"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+pretty = true
+show_error_codes = true
+packages = ["ironveil"]
