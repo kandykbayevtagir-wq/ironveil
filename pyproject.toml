@@ -92,6 +92,7 @@ ignore = ["E501", "S101"]
 
 [tool.ruff.lint.per-file-ignores]
 "src/ironveil/core/discovery.py" = ["S603"]
+"src/ironveil/core/dependencies.py" = ["S310"]
 "src/ironveil/core/git.py" = ["S603"]
 "tests/**" = ["S105", "S106", "S108", "S603", "S607"]
 

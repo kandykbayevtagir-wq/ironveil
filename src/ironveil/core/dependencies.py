@@ -278,7 +278,7 @@ def query_osv(
                 for item in packages
             ]
         }
-        request = urllib.request.Request(  # noqa: S310 - fixed HTTPS OSV endpoint
+        request = urllib.request.Request(
             OSV_QUERY_URL,
             data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json", "User-Agent": "IronVeil/0.1.0"},
@@ -286,7 +286,7 @@ def query_osv(
         )
         for attempt in range(config.retries + 1):
             try:
-                with urllib.request.urlopen(request, timeout=config.timeout_seconds) as response:  # noqa: S310
+                with urllib.request.urlopen(request, timeout=config.timeout_seconds) as response:
                     body = response.read(MAX_OSV_RESPONSE_BYTES + 1)
                 if len(body) > MAX_OSV_RESPONSE_BYTES:
                     warning = "OSV response exceeded the 8 MiB safety limit"
